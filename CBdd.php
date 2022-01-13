@@ -59,6 +59,32 @@ class CBdd {
     }
   }
 
+  public function lireTousLesEnregistrements($requete){
+    if (!$this->connecter()) {
+      echo 'connexion KO';
+      return null;
+    }
+
+    /* Crée une requête préparée */
+    if ($stmt = $this->connexion->prepare($requete)) {
+
+      /* Exécution de la requête */
+      $stmt->execute();
+
+      /* Lecture des variables résultantes */
+      $result = $stmt->get_result();
+
+      /* Fermeture du traitement */
+      $this->deconnecter();
+      return $result->fetch_all(MYSQLI_BOTH);
+    } else {
+
+      /* Fermeture de la connexion */
+      $this->deconnecter();
+      return null;
+    }
+  }
+
 /*   public function ajouterUneImage($requete, $id, $img_nom, $img_taille, $img_type, $img_blob){
     if (!$this->connecter()) {
       echo 'connexion KO';
