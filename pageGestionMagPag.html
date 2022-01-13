@@ -1,0 +1,84 @@
+<html>
+
+<head>
+  <title>Gestion Magazines&Pages</title>
+
+  <script>
+    function verifyFirstname() {
+
+      var xhr = new XMLHttpRequest();
+
+      xhr.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          if (this.responseText != '') {
+            alert(this.responseText);
+          }
+        }
+      }
+
+      var firstname = document.getElementById('firstname').value;
+      xhr.open("GET", "verify_firstname.php?firstname=" + firstname, true);
+      xhr.send();
+    }
+  </script>
+
+</head>
+
+<body>
+  <title>Gestion magazine&page </title>
+
+  <h2>Gestion Magazine</h2><br />
+
+  <form method="POST" action="pageGestionMagPage.php" enctype="multipart/form-data">
+
+    <div>
+      <label for="name">Voulez-vous supprimer ce magazine? </label>
+      <button type="submit">Supprimer</button>
+    </div>
+
+    <div> 
+      Voulez-vous supprimer ce magazine? <input type="text" name="nom" value="" /> 
+      <input type="submit" name="ok" value="OK" /> 
+    </div> 
+
+    <!-- <div>
+      <label for="firstname">Prenom :</label>
+      <input id="firstname" name="firstname" type="text" onChange="verifyFirstname()" />
+    </div>
+ -->
+    <h2>Gestion Pages</h2>
+    <div></select>
+      <br />Ajouter à la page:
+      <select name="contenus[]" multiple="multiple" size="2">
+        <option value="I">Image </option>
+        <option value="T">Texte </option>
+      </select><br /><br />
+      Numéro de page:
+      <input type="text" name="numPag" value="" size="5" maxlength="5">
+    </div><br />
+
+    <div><h4>Modifier le contenu d'une page:</h4><br />
+      <div>Numéro de page:
+        <input type="text" name="numPag" value="" size="5" maxlength="5">
+      </div><br />
+      <div>Nouveau contenu:
+        <input type="text" name="numPag" value="" size="50" maxlength="50">
+      </div><br />
+      <div> Déplacer vers page:
+        <input type="text" name="numPag" value="" size="5" maxlength="5">
+      </div><br />
+    </div>Supprimer page:
+    <input type="text" name="numPag" value="" size="5" maxlength="5"></div>
+    </div><br /><br />
+    </div>
+
+    <input type="submit" name="valider" value="Valider" />
+    <input type="reset" name="effacer" value="Effacer" />
+    <input type="button" name="action" value="Ne rien faire" />
+    </div>
+
+  </form>
+
+</body>
+
+<html>

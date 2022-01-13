@@ -17,36 +17,45 @@
 			<?php
 			//<div style="background-image:url(pages/1.jpg)"></div>
 			//$image = "pages/1.jpg";
-			$id = 1;
-               
-			$mysqli = mysqli_connect("localhost:3306", "flipbook", "Dt5[uctF@A_048Nf", "flipbook");
+
+		    require_once('CBdd.php');
 			
-			$result = $mysqli->query("SELECT `img_id`, `img_type`, `img_blob` FROM `images` WHERE img_id =". $id);
-		   
-				$row = $result->fetch_array();
-				if ( !$row[0] ){
-					echo "Id d'image inconnu";
+			function afficherImage($id){
+				$cnx=new CBdd();
+
+				$requete = "SELECT `img_type`, `img_blob` FROM `images` WHERE img_id = ?";
+				$row = $cnx->lireEnregistrementParId($requete, $id);
+		  
+				if ( $row == null){
+				  echo "image inconnue";
 				} else {
-					//header ("Content-type: " . $row[1]);
-					
+		  
+					$img_type = $row["img_type"];
+					$img_blob = $row["img_blob"];
+		   
 					//convert a blob into an image file
-					$image = imagecreatefromstring($row[2]); 
-								
+					$image = imagecreatefromstring($img_blob); 
+			
 					ob_start(); //You could also just output the $image via header() and bypass this buffer capture.
-					if ($row[1] == "image/jpeg" || $row[1] == "image/jpg"){
+					if ($img_type == "image/jpeg" || $img_type  == "image/jpg"){
 						imagejpeg($image, null, 80);
 					}
 					$data = ob_get_contents();
 					ob_end_clean();
 					
-					$image = "data:". $row[1] .";base64," .  base64_encode($data);
-					//$image = "data:image/jpg;base64," .  base64_encode($data);
-					echo '<div style="background-image:url(' . $image . ')"></div>';
-					
+					$image = "data:". $img_type  .";base64," .  base64_encode($data);
+					echo '<div style="background-image:url(' . $image . ')"></div>';				
 				}
+			}
 
-				$texte = "Texte d'essai";
+            function afficherTexte($texte){
 				echo '<div>' .$texte.'</div>';
+			}
+			
+				afficherImage(1);
+				afficherTexte("Coucou")
+
+				
 
 			//echo '<div style="background-image:url(' . $image . ')"></div>';
 		//	echo '<div style="background-image:url(pages/1.jpg)"></div>';

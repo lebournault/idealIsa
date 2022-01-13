@@ -1,4 +1,6 @@
 <?php
+    require_once('CBdd.php');
+
     function transfert(){
         $ret        = false;
         $img_blob   = '';
@@ -26,16 +28,23 @@
 
             $id_contenu = 1;
 
-          
+            //$cnx=new CBdd();
+      
+            /* $requete = "INSERT INTO images (id_contenu, img_nom, img_taille, img_type, img_blob) VALUES (?, ?, ?, ?, ?)";
+            if (!$cnx->ajouterUneImage($requete, $id_contenu, $img_nom, $img_taille, $img_type, $img_blob)) {
+                echo "echec d'insertion d'image";
+                return false;
+            } */
+      
             $mysqli = mysqli_connect("localhost:3306", "flipbook", "Dt5[uctF@A_048Nf", "flipbook");
         
             
-            $req ="INSERT INTO images (id_contenu, img_nom, img_taille, img_type, img_blob) VALUES (" .$id_contenu .", '" . $img_nom . "', '" .$img_taille . "', '" . $img_type . "' , '" . addslashes ($img_blob) . "')";
+           $req ="INSERT INTO images (id_contenu, img_nom, img_taille, img_type, img_blob) VALUES (" .$id_contenu .", '" . $img_nom . "', '" .$img_taille . "', '" . $img_type . "' , '" . addslashes ($img_blob) . "')";
 
            //echo "requete : ". $req ."<br>";
             
            $mysqli->query($req);
-        return true;
+            return true;
         }
     }
 ?>
