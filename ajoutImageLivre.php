@@ -1,7 +1,7 @@
 <?php
     require_once('CBdd.php');
 
-    function transfert(){
+    function ajoutImageLivre(){
         $ret        = false;
         $img_blob   = '';
         $img_taille = 0;

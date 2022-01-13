@@ -15,7 +15,7 @@ class CBdd {
   public function connecter(){
     try 
     {
-      $this->connexion = mysqli_connect($this->parametresBdd->getIp() .':'. $this->parametresBdd->getPort(), $this->parametresBdd->getMotDePasse(),$this->parametresBdd->getUtilisateur(), $this->parametresBdd->getNomBase());
+      $this->connexion = mysqli_connect($this->parametresBdd->getIp() .':'. $this->parametresBdd->getPort(),$this->parametresBdd->getUtilisateur(), $this->parametresBdd->getMotDePasse(), $this->parametresBdd->getNomBase());
       return true;
     }
     catch(mysqli_sql_exception  $e){
@@ -69,7 +69,11 @@ class CBdd {
     if ($stmt = $this->connexion->prepare($requete)) {
 
       /* Exécution de la requête */
-      $stmt->execute();
+      if (!$stmt->execute()) {
+        echo "Échec lors de l'exécution de la requête : (" . $stmt->errno . ") " . $stmt->error;
+        $this->deconnecter();
+        return null;
+      }
 
       /* Lecture des variables résultantes */
       $result = $stmt->get_result();
@@ -84,6 +88,66 @@ class CBdd {
       return null;
     }
   }
+  
+  public function supprimerTousLesEnregistrements($requete){
+    if (!$this->connecter()) {
+      echo 'connexion KO';
+      return false;
+    }
+
+    /* Crée une requête préparée */
+    if ($stmt = $this->connexion->prepare($requete)) {
+
+      /* Exécution de la requête */
+      if (!$stmt->execute()) {
+        echo "Échec lors de l'exécution de la requête : (" . $stmt->errno . ") " . $stmt->error;
+        $this->deconnecter();
+        return false;
+      }
+
+      /* Lecture des variables résultantes */
+      $result = $stmt->get_result();
+
+      /* Fermeture du traitement */
+      $this->deconnecter();
+      return true;
+    } else {
+
+      /* Fermeture de la connexion */
+      $this->deconnecter();
+      return false;
+    }
+  }
+
+  public function supprimerUnEnregistrementParId($requete, $id){
+    if (!$this->connecter()) {
+      echo 'connexion KO';
+      return false;
+    }
+
+    /* Crée une requête préparée */
+    if ($stmt = $this->connexion->prepare($requete)) {
+
+       /* Lecture des marqueurs */
+       $stmt->bind_param("i", $id);
+
+      /* Exécution de la requête */
+      if (!$stmt->execute()) {
+        echo "Échec lors de l'exécution de la requête : (" . $stmt->errno . ") " . $stmt->error;
+        $this->deconnecter();
+        return false;
+      }
+      
+      /* Fermeture du traitement */
+      $this->deconnecter();
+      return true;
+    } else {
+
+      /* Fermeture de la connexion */
+      $this->deconnecter();
+      return false;
+    }
+  }
 
 /*   public function ajouterUneImage($requete, $id, $img_nom, $img_taille, $img_type, $img_blob){
     if (!$this->connecter()) {
@@ -96,8 +160,9 @@ class CBdd {
       // Lecture des marqueurs
       //$img_blob = mysqli_real_escape_string($this->connexion,$img_blob);
      // $img_blob = addslashes($img_blob);
-      $stmt->bind_param("isisb", $id, $img_nom, $img_taille, $img_type, $img_blob);
-      $stmt->send_long_data(0, $img_blob);
+     //a tester
+      $stmt->bind_param("isisb", $id, $img_nom, $img_taille, $img_type, addslashes($img_blob));
+      //$stmt->send_long_data(0, $img_blob);
 
         // Exécution de la requête //
       if (!$stmt->execute()) {

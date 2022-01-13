@@ -5,8 +5,8 @@ class CParametresBDD {
   private $ip='localhost';
   private $port='3306';
   private $nomBase='flipbook';
-  private $utilisateur='Dt5[uctF@A_048Nf';
-  private $motDePasse='flipbook';
+  private $utilisateur='flipbook';
+  private $motDePasse='Dt5[uctF@A_048Nf';
 
   // getters des paramètres
   

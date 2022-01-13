@@ -18,7 +18,8 @@
       //convert a blob into an image file
       $image = imagecreatefromstring($img_blob); 
 
-      ob_start(); //You could also just output the $image via header() and bypass this buffer capture.
+      //capture de tampon
+      ob_start(); 
       if ($img_type == "image/jpeg" || $img_type  == "image/jpg"){
         imagejpeg($image, null, 80);
       }
