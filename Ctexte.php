@@ -6,6 +6,7 @@ class CTexte{
     
     private $id_txt;
     private $id_contenu;
+    private $titre;
     private $texte;
     
     /* constructeur 
@@ -39,14 +40,15 @@ class CTexte{
 
         $cnx = new CBdd();
 
-        $requete = "SELECT `id_txt`, `id_contenu`, `texte` FROM `texte` WHERE id_txt = ?";
+        $requete = "SELECT `id_txt`, `id_contenu`, `titre`, `texte` FROM `texte` WHERE id_txt = ?";
         $row = $cnx->lireEnregistrementParId($requete, $this->id_txt);
 
         if ($row == null) {
             echo "texte inconnu";
         } else {
-            $this->id_txt= $row["id_texte"];
+            $this->id_txt= $row["id_txt"];
             $this->id_contenu = $row["id_contenu"];
+            $this->titre = $row["titre"];
             $this->texte = $row["texte"];
          }
     }
@@ -67,14 +69,13 @@ class CTexte{
         return true;
     }
 
-    function inserer($id_contenu, $texte){
+    function inserer($titre, $texte){
                
-            $req = "INSERT INTO texte (id_contenu, texte)
+            $req = "INSERT INTO texte (titre, texte)
                      VALUES (?,?)";
             $cnx = new CBdd();
 
-            if (!$cnx->actualiserEnregistrement($req, "is", $id_contenu, $texte)) {
-                // if (!$cnx->insererEnregistrement($req)){
+            if (!$cnx->actualiserEnregistrement($req, "ss", $titre, $texte)) {
                 echo "Echec d'enregistrement";
                 return false;
             }
@@ -83,7 +84,8 @@ class CTexte{
             $result = $cnx->lireTousLesEnregistrements($req);
             
             $this->id_txt = $result[0][0];
-            $this->id_contenu = $id_contenu;
+            $this->id_contenu = "NULL";
+            $this->titre = $titre;
             $this->texte = $texte;
 
             return true;
@@ -91,10 +93,10 @@ class CTexte{
     
         public function modifier()
         {
-            $req = "UPDATE texte SET id_contenu=?, texte=? WHERE id_txt=?";
+            $req = "UPDATE texte SET id_contenu=?, titre=?, texte=? WHERE id_txt=?";
             $cnx = new CBdd();
 
-            if (!$cnx->actualiserEnregistrement($req, "isi",$this->id_contenu, $this->texte, $this->id_txt)) {
+            if (!$cnx->actualiserEnregistrement($req, "issi",$this->id_contenu, $this->titre, $this->texte, $this->id_txt)) {
                 // if (!$cnx->insererEnregistrement($req)){
                 echo "Echec d'enregistrement";
                 return false;
@@ -142,4 +144,30 @@ class CTexte{
 
         return $this;
     }
+
+    /**
+     * Set the value of titre
+     *
+     * @return  self
+     */ 
+    public function setTitre($titre)
+    {
+        $this->titre = $titre;
+
+        return $this;
+    }
+
+    /**
+     * Set the value of id_txt
+     *
+     * @return  self
+     */ 
+    public function setId_txt($id_txt)
+    {
+        $this->id_txt = $id_txt;
+
+        return $this;
+    }
+
+    
 }

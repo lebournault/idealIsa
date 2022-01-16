@@ -35,21 +35,46 @@ function modifierImage($id, $nom, $description){
    return true;
 }
 
-//iGestionImageTexte/formulaire d'ajout de texte et de suppression
-function supprimerTexte($id)
+
+function supprimerTexte($id_txt)
 {
-   $txt = new CTexte($id);
-   $txt->supprimer();
+   $txt = new CTexte($id_txt);
+   if (!$txt->supprimer()){
+      echo "Suppression du texte impossible <br>";
+      return false;
+   }
+   return true;
+   
 }
 
-function ajouterTexte($texte, $id_contenu){
+
+
+function ajouterTexte($texte, $titre){
+   
    $txt = new CTexte();
-   $txt->inserer($id_contenu, $texte);
+   if (!$txt->inserer($titre, $texte)){
+      echo "Insertion du texte impossible <br>";
+      return false;
+   }
+   return true;
+
 }
 
-function modifierTexte($id)
+function modifierTexte($id_txt, $titre, $texte)
 {
-   $txt = new CTexte($id);
-   $txt->modifier($id);
+   $txt = new CTexte($id_txt);
+   $txt->modifier($id_txt);
+
+
+   $txt = new CTexte($id_txt);
+   $txt->settitre($titre);
+   $txt->setTexte($texte);
+
+   if (!$txt->modifier()){
+      echo "Modification du texte impossible <br>";
+      return false;
+   }
+   return true;
+
 }
 ?>

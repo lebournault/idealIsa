@@ -28,7 +28,7 @@
       <textarea name="img_desc" rows="5" cols="40">Description de votre image ici</textarea>
       <input type="submit" value="Enregistrer" />
    </form>
-
+   <h3>Modifications:</h3>
    <?php
    // Traitement du formulaire. 
    if (isset($_POST['ok'])) {
@@ -59,7 +59,7 @@
          <!-- ligne de titre -->
          <tr align="center">
             <th>Miniature</th>
-            <th>Identifiant</th>
+            <th style="display:none;">Identifiant</th>
             <th>Nom</th>
             <th>Description</th>
             <th>Supprimer</th>
@@ -82,7 +82,7 @@
                // Mise en forme des données. 
 
                printf(
-                  "<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>",
+                  "<tr><td>%s</td><td style=\"display:none;\">%s</td><td>%s</td><td>%s</td><td>%s</td></tr>",
                   "<img src='" . $image->getImg_formatee()  . "' width='30%'/>",
                   $image->getImg_id() .
                      "<input type=\"hidden\" 
