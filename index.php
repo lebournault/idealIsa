@@ -23,7 +23,7 @@
 			function afficherImage($id){
 				$cnx=new CBdd();
 
-				$requete = "SELECT `img_type`, `img_blob` FROM `images` WHERE img_id = ?";
+				$requete = "SELECT `img_type`, `img_blob` FROM `image` WHERE img_id = ?";
 				$row = $cnx->lireEnregistrementParId($requete, $id);
 		  
 				if ( $row == null){
@@ -52,7 +52,7 @@
 				echo '<div>' .$texte.'</div>';
 			}
 			
-				afficherImage(1);
+				afficherImage(2);
 				afficherTexte("Coucou")
 
 				
