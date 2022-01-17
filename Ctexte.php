@@ -170,4 +170,12 @@ class CTexte{
     }
 
     
+
+    /**
+     * Get the value of titre
+     */ 
+    public function getTitre()
+    {
+        return $this->titre;
+    }
 }

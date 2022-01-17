@@ -64,6 +64,36 @@ class CBdd
     }
   }
 
+  public function lirePlusieursEnregistrementsParId($requete, $id)
+  {
+    if (!$this->connecter()) {
+      echo 'connexion KO';
+      return null;
+    }
+
+    /* Crée une requête préparée */
+    if ($stmt = $this->connexion->prepare($requete)) {
+
+      /* Lecture des marqueurs */
+      $stmt->bind_param("i", $id);
+
+      /* Exécution de la requête */
+      $stmt->execute();
+
+      /* Lecture des variables résultantes */
+      $result = $stmt->get_result();
+
+      /* Fermeture du traitement */
+      $this->deconnecter();
+      return $result->fetch_all(MYSQLI_BOTH);
+    } else {
+
+      /* Fermeture de la connexion */
+      $this->deconnecter();
+      return null;
+    }
+  }
+
   public function lireTousLesEnregistrements($requete)
   {
     if (!$this->connecter()) {
@@ -113,7 +143,7 @@ class CBdd
     $args = func_get_args();
 
     if ($nb == 0 || $nb == 2) {
-      echo "Nombre d'aruments incorrects";
+      echo "Nombre d'arguments incorrects";
       return false;
     }
 

@@ -6,6 +6,7 @@ class CMagazine
     /* attributs */
     private $id_mag;
     private $nom_mag;
+    private $nb_pages;
 
     /* association vers les références d'objets CPage */
     private $pages = array(); // tableau des pages du magazine
@@ -42,24 +43,23 @@ class CMagazine
 
         $cnx = new CBdd();
 
-        $requete = "SELECT nom_mag FROM magazine WHERE id_mag = ?";
+        $requete = "SELECT nom_mag, nb_pages FROM magazine WHERE id_mag = ?";
         $row = $cnx->lireEnregistrementParId($requete, $this->id_mag);
 
         if ($row == null) {
-            echo "contenu inconuu";
+            echo "magazine inconnu";
         } else {
             $this->nom_mag = $row["nom_mag"];
+            $this->nb_pages = $row["nb_pages"];
         }
 
         //initialisation du tableau des pages du magazine
-        $requete = "SELECT id_page FROM page WHERE id_mag = ? ORDER BY num_page";
-        $result = $cnx->lireEnregistrementParId($requete, $this->id_mag);
-
-        if ($row == null) {
-            echo "id magazine inconuu";
-        } else {
-            foreach ($result as $page) {
-                $this->pages[] = new CPage($page[0]);
+        $requete = "SELECT id_page, id_contenu, num_page FROM page WHERE id_mag = ? order by num_page";
+        $result = $cnx->lirePlusieursEnregistrementsParId($requete, $this->id_mag);
+        
+        if ($result != null) { 
+            foreach ($result as $magazine){   
+                $this->pages[] = new CPage($magazine[0]);
             }
         }
     }
@@ -86,18 +86,19 @@ class CMagazine
  @arg $nom_mag: nom du magazine
  return : true ou false suivant que l'enregistrement a fonctionné ou nom
  */
-    function inserer($nom_mag)
+    function inserer($nom_mag, $nb_pages)
     {
         // inscription dans la BDD
-        $req = "INSERT INTO magazine (nom_mag) VALUES (?)";
+        $req = "INSERT INTO magazine (nom_mag, nb_pages) VALUES (?,?)";
 
         $cnx = new CBdd();
-        if (!$cnx->actualiserEnregistrement($req, "s", $nom_mag)) {
+        if (!$cnx->actualiserEnregistrement($req, "si", $nom_mag, $nb_pages)) {
             echo "Echec d'enregistrement";
             return false;
         }
 
           $this->nom_mag = $nom_mag;
+          $this->nb_pages = $nb_pages;
         // récupération et affectation de l'attribut $id_mag (lecture de l'id du dernier enregistrement effectué)
         $req = "SELECT MAX(id_mag) FROM magazine";
         $result = $cnx->lireTousLesEnregistrements($req);
@@ -113,15 +114,67 @@ class CMagazine
  */
     public function modifier()
     {
-        $req = "UPDATE magazine SET nom_mag = ? WHERE id_mag = ?";
+        $req = "UPDATE magazine SET nom_mag = ?, nb_pages =? WHERE id_mag = ?";
 
         $cnx = new CBdd();
 
-        if (!$cnx->actualiserEnregistrement($req, "si", $this->nom_mag, $this->id_mag)) {
+        if (!$cnx->actualiserEnregistrement($req, "sii", $this->nom_mag, $this->nb_pages, $this->id_mag)) {
             echo "Echec de modification <br>";
             return false;
         }
 
         return true;
+    }
+
+    
+
+
+
+    /**
+     * Get the value of nom_mag
+     */ 
+    public function getNom_mag()
+    {
+        return $this->nom_mag;
+    }
+
+    /**
+     * Set the value of nom_mag
+     *
+     * @return  self
+     */ 
+    public function setNom_mag($nom_mag)
+    {
+        $this->nom_mag = $nom_mag;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of id_mag
+     */ 
+    public function getId_mag()
+    {
+        return $this->id_mag;
+    }
+
+    /**
+     * Get the value of nb_pages
+     */ 
+    public function getNb_pages()
+    {
+        return $this->nb_pages;
+    }
+
+    /**
+     * Set the value of nb_pages
+     *
+     * @return  self
+     */ 
+    public function setNb_pages($nb_pages)
+    {
+        $this->nb_pages = $nb_pages;
+
+        return $this;
     }
 }

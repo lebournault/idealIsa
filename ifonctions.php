@@ -63,10 +63,6 @@ function ajouterTexte($texte, $titre){
 function modifierTexte($id_txt, $titre, $texte)
 {
    $txt = new CTexte($id_txt);
-   $txt->modifier($id_txt);
-
-
-   $txt = new CTexte($id_txt);
    $txt->settitre($titre);
    $txt->setTexte($texte);
 
@@ -77,4 +73,41 @@ function modifierTexte($id_txt, $titre, $texte)
    return true;
 
 }
+
+function ajouterMagazine($nom_mag, $nb_pages){
+   
+   $mag = new CMagazine();
+   if (!$mag->inserer($nom_mag, $nb_pages)){
+      echo "Insertion du magazine impossible <br>";
+      return false;
+   }
+   return true;
+
+}
+
+function modifierMagazine($id_mag, $nom_mag, $nb_pages)
+{
+   $mag = new CMagazine($id_mag);
+   $mag->setNom_mag($nom_mag);
+   $mag->setNb_pages($nb_pages);
+
+   if (!$mag->modifier()){
+      echo "Modification du magazine impossible <br>";
+      return false;
+   }
+   return true;
+
+}
+
+function supprimerMagazine($id_mag)
+{
+   $mag = new CMagazine($id_mag);
+   if (!$mag->supprimer()){
+      echo "Suppression du magazine impossible <br>";
+      return false;
+   }
+   return true;
+   
+}
+
 ?>

@@ -46,7 +46,7 @@ class CContenu
         $row = $cnx->lireEnregistrementParId($requete, $this->id_contenu);
 
         if ($row == null) {
-            echo "contenu inconuu";
+            echo "contenu inconnu";
         } else {
             $this->id_mycontenu = $row["id_mycontenu"];
         }

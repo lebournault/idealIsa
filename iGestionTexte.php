@@ -2,6 +2,7 @@
 
 <head>
    <title>Ajoute une texte dans la table texte</title>
+   <a href ="iGestionMag.php">Retour Gestion Magazine</a><br>
 </head>
 
 <body>
@@ -24,10 +25,14 @@
    <h1>Gestionnaire du texte</h1>
    <h3>Ajouter un texte à votre répertoire texte:</h3>
    <form enctype="multipart/form-data" action="" method="post">
-      <label for="name">titre :</label>
-      <input type="text" id="titre" name="titre"></text>
-      <textarea name="texte" rows="5" cols="40"></textarea>
-      <input type="submit" value="Enregistrer" />
+      <table border="0" cellpadding="4" cellspacing="0">
+         <tr style="vertical-align:middle;">
+            <td><label for="name">titre :</label></td>
+            <td><input type="text" id="titre" name="titre"></text></td>
+            <td><textarea name="texte" rows="5" cols="40" placeholder="Ajouter votre texte ici"></textarea></td>
+            <td><input type="submit" value="Enregistrer" /></td>
+         <tr>
+      </table>
    </form>
    <h3>Modifications :</h3>
    <?php
@@ -89,12 +94,13 @@
            name=\"saisie[" . $texte->getId_txt() . "][modifier]\" />",
                   "<input type=\"text\" 
            name=\"saisie[" . $texte->getId_txt() . "][titre]\" 
-           value=\"" . $texte->getId_txt() . "\" 
+           value=\"" . $texte->getTitre() . "\" 
            onchange=\"document.formulaire[$n].value=1\" />",
-                  "<input type=\"text\" 
+                  "<textarea 
            name=\"saisie[" . $texte->getId_txt() . "][texte]\" 
-           value=\"" . $texte->getTexte() . "\" 
-           onchange=\"document.formulaire[$n].value=1\" />",
+           rows=\"7\" cols=\"40\" onchange=\"document.formulaire[$n].value=1\">" 
+           . $texte->getTexte() . " 
+            </textarea>",
                   "<input type=\"checkbox\" 
            name=\"saisie[" . $texte->getId_txt() . "][supprimer]\" 
            value=\"" . $texte->getId_txt() . "\" />"

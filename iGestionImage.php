@@ -2,11 +2,12 @@
 
 <head>
    <title>Ajoute une image dans la table image</title>
+   <a href ="iGestionMag.php">Retour Gestion Magazine</a><br>
 </head>
 
 <body>
    <?php
-  
+
    include_once("ifonctions.php");
    include_once("ifonctions.inc.php");
    include_once("CCollectionImages.php");
@@ -23,10 +24,14 @@
    <h1>Gestionnaire d'image</h1>
    <h3>Ajouter une image à votre répertoire Images:</h3>
    <form enctype="multipart/form-data" action="" method="post">
-      <input type="hidden" name="MAX_FILE_SIZE" value="16777216" />
-      <input type="file" name="imagesSite" size=50 />
-      <textarea name="img_desc" rows="5" cols="40">Description de votre image ici</textarea>
-      <input type="submit" value="Enregistrer" />
+      <table border="0" cellpadding="4" cellspacing="0">
+         <tr style="vertical-align:middle;">
+            <td><input type="hidden" name="MAX_FILE_SIZE" value="16777216" /></td>
+            <td><input type="file" name="imagesSite" size=50 /></td>
+            <td><textarea name="img_desc" rows="5" cols="40" placeholder="Ajouter votre description ici"></textarea></td>
+            <td> <input type="submit" value="Enregistrer" /></td>
+         <tr>
+      </table>
    </form>
    <h3>Modifications:</h3>
    <?php
@@ -49,7 +54,7 @@
       }
    }
    // Recharger les images
- // $resultat = lireToutesLesImages();
+   // $resultat = lireToutesLesImages();
 
    ?>
    <!-- construction d'une table HTML à l'intérieur  
@@ -67,7 +72,7 @@
          <?php
          // Code PHP pour les lignes du tableau. 
          $images = new CCollectionImages();
-         
+
          if ($images->getCollection() != null) { // S'il y a un résultat à afficher 
             // Initialisation d'un compteur de ligne. 
             $i = 0;
