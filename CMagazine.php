@@ -71,7 +71,7 @@ class CMagazine
         // on supprime le magazine à partir de son id
         $cnx = new CBdd();
 
-        $requete = "DELETE FROM magazine WHERE id_mag = ?";
+        $requete = "DELETE FROM `magazine` WHERE id_mag = ?";
         if (!$cnx->actualiserEnregistrement($requete, "i", $this->id_mag)) {
             echo "Impossible de supprimer le magazine " . $this->id_mag;
             return false;
@@ -90,19 +90,20 @@ class CMagazine
     {
         // inscription dans la BDD
         $req = "INSERT INTO magazine (nom_mag, nb_pages) VALUES (?,?)";
-
+        
         $cnx = new CBdd();
         if (!$cnx->actualiserEnregistrement($req, "si", $nom_mag, $nb_pages)) {
             echo "Echec d'enregistrement";
             return false;
         }
 
-          $this->nom_mag = $nom_mag;
-          $this->nb_pages = $nb_pages;
-        // récupération et affectation de l'attribut $id_mag (lecture de l'id du dernier enregistrement effectué)
+         // récupération et affectation de l'attribut $id_mag (lecture de l'id du dernier enregistrement effectué)
         $req = "SELECT MAX(id_mag) FROM magazine";
         $result = $cnx->lireTousLesEnregistrements($req);
+        
         $this->id_mag = $result[0][0];
+        $this->nom_mag = $nom_mag;
+        $this->nb_pages = $nb_pages;
 
         return true;
     }

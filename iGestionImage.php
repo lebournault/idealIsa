@@ -2,7 +2,7 @@
 
 <head>
    <title>Ajoute une image dans la table image</title>
-   <a href ="iGestionMag.php">Retour Gestion Magazine</a><br>
+   <a href ="index.php">Retour Gestion Magazine</a><br>
 </head>
 
 <body>

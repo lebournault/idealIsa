@@ -75,7 +75,6 @@ function modifierTexte($id_txt, $titre, $texte)
 }
 
 function ajouterMagazine($nom_mag, $nb_pages){
-   
    $mag = new CMagazine();
    if (!$mag->inserer($nom_mag, $nb_pages)){
       echo "Insertion du magazine impossible <br>";
@@ -109,5 +108,16 @@ function supprimerMagazine($id_mag)
    return true;
    
 }
+//A faire ou lire enregistrement par id
+/* function afficherCouvertureMagazine($id_mag)
+{
+   $mag = new CMagazine($id_mag);
+   if (!$mag->supprimer()){
+      echo "Suppression du magazine impossible <br>";
+      return false;
+   }
+   return true;
+   
+} */
 
 ?>
