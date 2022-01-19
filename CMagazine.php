@@ -54,12 +54,12 @@ class CMagazine
         }
 
         //initialisation du tableau des pages du magazine
-        $requete = "SELECT id_page, id_contenu, num_page FROM page WHERE id_mag = ? order by num_page";
+        $requete = "SELECT id_contenu, num_page FROM page WHERE id_mag = ? order by num_page";
         $result = $cnx->lirePlusieursEnregistrementsParId($requete, $this->id_mag);
         
         if ($result != null) { 
-            foreach ($result as $magazine){   
-                $this->pages[] = new CPage($magazine[0]);
+            foreach ($result as $page){   
+                $this->pages[] = new CPage($this->id_mag, $page[0]);
             }
         }
     }
@@ -178,4 +178,13 @@ class CMagazine
 
         return $this;
     }
+
+    /**
+     * Get the value of pages
+     */ 
+    public function getPages()
+    {
+        return $this->pages;
+    }
+
 }

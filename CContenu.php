@@ -1,14 +1,15 @@
 <?php
-require_once('CMycontenu.php');
+require_once('IfContenu.php');
+require_once('CImage.php');
+require_once('CTexte.php');
 
 class CContenu
 {
     /* attributs */
     private $id_contenu;
-    private $id_mycontenu;
-
-    /*références vers d'autres d'objets */
-    private $contenu; // référence vers CMyContenu
+    private $boolean_img;   // True si le contenu est une image, false si c'est un texte
+    private $id_img;
+    private $id_txt;
 
     /* constructeur 
         arguments acceptés : aucun ou $id_contenu
@@ -34,25 +35,24 @@ class CContenu
     }
 
     /* constructeur avec $im_img comme paramètre */
-    /*initialise tous les attributs à partir de la BDD grâce à id_img */
-    /* @arg = id_img */
+    /*initialise tous les attributs à partir de la BDD grâce à id_contenu */
+    /* @arg = id_contenu */
     private function constructeur1($args)
     {
         $this->id_contenu = $args[0];
 
         $cnx = new CBdd();
 
-        $requete = "SELECT id_mycontenu FROM contenu WHERE id_contenu = ?";
+        $requete = "SELECT boolean_img, id_img, id_txt FROM contenu WHERE id_contenu = ?";
         $row = $cnx->lireEnregistrementParId($requete, $this->id_contenu);
 
         if ($row == null) {
             echo "contenu inconnu";
         } else {
-            $this->id_mycontenu = $row["id_mycontenu"];
+            $this->boolean_img = $row["boolean_img"];
+            $this->id_img = $row["id_img"];
+            $this->id_txt = $row["id_txt"];
         }
-
-        //initialisation de la référence vers l'objet image ou texte
-        $this->contenu = new CMyContenu($this->id_mycontenu);
     }
 
 
@@ -64,7 +64,7 @@ class CContenu
 
         $requete = "DELETE FROM contenu WHERE id_contenu = ?";
         if (!$cnx->actualiserEnregistrement($requete, "i", $this->id_contenu)) {
-            echo "Impossible de supprimer l'image " . $this->id_contenu;
+            echo "Impossible de supprimer le contenu " . $this->id_contenu;
             return false;
         }
 
@@ -73,23 +73,24 @@ class CContenu
 
 
     /* 
- enregistre un id_mycontenu dans la BDD
- @arg $id_mycontenu : id de mycontenu
+ enregistre un id_img dans la BDD
+ @arg $id_image : id de l'image
  return : true ou false suivant que l'enregistrement a fonctionné ou nom
  */
-    function inserer($id_mycontenu)
+    function insererImage($id_image)
     {
         // inscription dans la BDD
-        $req = "INSERT INTO contenu (id_mycontenu) VALUES (?)";
+        $req = "INSERT INTO contenu (boolean_img, id_img) VALUES (?, ?)";
 
         $cnx = new CBdd();
-        if (!$cnx->actualiserEnregistrement($req, "i", $id_mycontenu)) {
+        if (!$cnx->actualiserEnregistrement($req, "ii", 1, $id_image )) {
             echo "Echec d'enregistrement";
             return false;
         }
 
-        $this->id_mycontenu = $id_mycontenu;
-        // récupération et affectation de l'attribut $img_id (lecture de l'id du dernier enregistrement effectué)
+        $this->boolean_img = 1;
+        $this->id_img = $id_image;
+        // récupération et affectation de l'attribut $id_contenu (lecture de l'id du dernier enregistrement effectué)
         $req = "SELECT MAX(id_contenu) FROM contenu";
         $result = $cnx->lireTousLesEnregistrements($req);
         $this->id_contenu = $result[0][0];
@@ -98,22 +99,45 @@ class CContenu
     }
 
 
-    /* 
- modifie l'objet dans la BDD (nom et desciption uniquement)
- return : true ou false suivant que la mise à jour à fonctionné ou non
+        /* 
+ enregistre un id_txt dans la BDD
+ @arg $id_txt : id du texte
+ return : true ou false suivant que l'enregistrement a fonctionné ou nom
  */
-    public function modifier()
+function insererTexte($id_txt)
+{
+    // inscription dans la BDD
+    $req = "INSERT INTO contenu (boolean_img, id_txt) VALUES (?, ?)";
+
+    $cnx = new CBdd();
+    if (!$cnx->actualiserEnregistrement($req, "ii", 0, $id_txt )) {
+        echo "Echec d'enregistrement";
+        return false;
+    }
+
+    $this->boolean_img = 0;
+    $this->id_txt = $id_txt;
+    // récupération et affectation de l'attribut $id_contenu (lecture de l'id du dernier enregistrement effectué)
+    $req = "SELECT MAX(id_contenu) FROM contenu";
+    $result = $cnx->lireTousLesEnregistrements($req);
+    $this->id_contenu = $result[0][0];
+
+    return true;
+}
+
+
+
+    public function lireContenu()
     {
-        $req = "UPDATE contenu SET id_mycontenu = ? WHERE id_contenu = ?";
 
-        $cnx = new CBdd();
-
-        if (!$cnx->actualiserEnregistrement($req, "ii", $this->id_mycontenu, $this->id_contenu)) {
-            echo "Echec de modification <br>";
-            return false;
+        /* traitement du contenu à renvoyer */
+        if ($this->boolean_img) {        // si c'est une image
+            $contenu = new CImage($this->id_img);
+        } else {
+            $contenu = new CTexte($this->id_txt);
         }
 
-        return true;
+        return $contenu->lireContenu();
     }
 
     /**
@@ -132,6 +156,26 @@ class CContenu
     public function setContenu($contenu)
     {
         $this->contenu = $contenu;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of boolean_img
+     */ 
+    public function getBoolean_img()
+    {
+        return $this->boolean_img;
+    }
+
+    /**
+     * Set the value of boolean_img
+     *
+     * @return  self
+     */ 
+    public function setBoolean_img($boolean_img)
+    {
+        $this->boolean_img = $boolean_img;
 
         return $this;
     }

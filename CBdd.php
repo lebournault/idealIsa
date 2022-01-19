@@ -94,6 +94,80 @@ class CBdd
     }
   }
 
+
+  public function lirePlusieursEnregistrements()
+  {
+    if (!$this->connecter()) {
+      echo 'connexion KO';
+      return false;
+    }
+
+    $nb = func_num_args();
+    $args = func_get_args();
+
+    if ($nb == 0 || $nb == 2) {
+      echo "Nombre d'arguments incorrects";
+      return false;
+    }
+
+    $requete = $args[0];
+
+    if ($nb != 1) {
+      $type = $args[1];
+    }
+
+
+    if ($stmt = $this->connexion->prepare($requete)) {
+
+      switch ($nb) {
+        case 1:
+          break;
+        case 3:
+          $stmt->bind_param($type, $args[2]);
+          break;
+        case 4:
+          $stmt->bind_param($type, $args[2], $args[3]);
+          break;
+        case 5:
+          $stmt->bind_param($type, $args[2], $args[3], $args[4]);
+          break;
+        case 6:
+          $stmt->bind_param($type, $args[2], $args[3], $args[4], $args[5]);
+          break;
+        case 7:
+          $stmt->bind_param($type, $args[2], $args[3], $args[4], $args[5], $args[6]);
+          break;
+        case 8:
+          $stmt->bind_param($type, $args[2], $args[3], $args[4], $args[5], $args[6], $args[7]);
+          break;
+        case 9:
+          $stmt->bind_param($type, $args[2], $args[3], $args[4], $args[5], $args[6], $args[7], $args[8]);
+          break;
+
+        default:
+          echo "Nombre d'arguments incorrects";
+          return false;
+      }
+
+      /* Exécution de la requête */
+      $stmt->execute();
+
+      /* Lecture des variables résultantes */
+      $result = $stmt->get_result();
+
+      /* Fermeture du traitement */
+      $this->deconnecter();
+      return $result->fetch_all(MYSQLI_BOTH);
+    } else {
+
+      /* Fermeture de la connexion */
+      $this->deconnecter();
+      return null;
+    }
+  }
+
+
+
   public function lireTousLesEnregistrements($requete)
   {
     if (!$this->connecter()) {

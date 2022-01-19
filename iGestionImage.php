@@ -39,17 +39,17 @@
    if (isset($_POST['ok'])) {
       // Récupérer le tableau contenant la saisie. 
       $lignes = $_POST['saisie'];
-      foreach ($lignes as $img_id => $ligne) {
+      foreach ($lignes as $id_img => $ligne) {
          // Nettoyage de la saisie. 
          $img_nom = trim($ligne['img_nom']);
          $img_desc = trim($ligne['img_desc']);
 
          if (isset($ligne['supprimer'])) {
             // Case "supprimer" cochée = suppression = DELETE 
-            supprimerImage($img_id);
+            supprimerImage($id_img);
          } elseif ($ligne['modifier'] == 1) {
             // Zone "modifier" TRUE (1) = modification = UPDATE 
-            modifierImage($img_id, $img_nom, $img_desc);
+            modifierImage($id_img, $img_nom, $img_desc);
          }
       }
    }
@@ -89,20 +89,20 @@
                printf(
                   "<tr><td>%s</td><td style=\"display:none;\">%s</td><td>%s</td><td>%s</td><td>%s</td></tr>",
                   "<img src='" . $image->getImg_formatee()  . "' width='30%'/>",
-                  $image->getImg_id() .
+                  $image->getId_img() .
                      "<input type=\"hidden\" 
-           name=\"saisie[" . $image->getImg_id() . "][modifier]\" />",
+           name=\"saisie[" . $image->getid_img() . "][modifier]\" />",
                   "<input type=\"text\" 
-           name=\"saisie[" . $image->getImg_id() . "][img_nom]\" 
+           name=\"saisie[" . $image->getid_img() . "][img_nom]\" 
            value=\"" . $image->getImg_nom() . "\" 
            onchange=\"document.formulaire[$n].value=1\" />",
                   "<input type=\"text\" 
-           name=\"saisie[" . $image->getImg_id() . "][img_desc]\" 
+           name=\"saisie[" . $image->getid_img() . "][img_desc]\" 
            value=\"" . $image->getImg_desc() . "\" 
            onchange=\"document.formulaire[$n].value=1\" />",
                   "<input type=\"checkbox\" 
-           name=\"saisie[" . $image->getImg_id() . "][supprimer]\" 
-           value=\"" . $image->getImg_id() . "\" />"
+           name=\"saisie[" . $image->getid_img() . "][supprimer]\" 
+           value=\"" . $image->getid_img() . "\" />"
                );
             } // foreach 
          }

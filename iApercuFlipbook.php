@@ -24,7 +24,7 @@
 			function afficherImage($id){
 				$cnx=new CBdd();
 
-				$requete = "SELECT `img_type`, `img_blob` FROM `image` WHERE img_id = ?";
+				$requete = "SELECT `img_type`, `img_blob` FROM `image` WHERE id_img = ?";
 				$row = $cnx->lireEnregistrementParId($requete, $id);
 		  
 				if ( $row == null){

@@ -5,13 +5,12 @@ require_once('CMagazine.php');
 class CPage
 {
     /* attributs */
-    private $id_page;
     private $id_contenu;
     private $id_mag;
     private $num_page;
 
-    /*références vers d'autres d'objets */
-    private $contenu; // référence vers CContenu
+    /* références */
+    private $contenu;   // référence vers Ccontenu
 
     /* constructeur 
         arguments acceptés : aucun ou $id_contenu
@@ -36,28 +35,30 @@ class CPage
     {
     }
 
-    /* constructeur avec $id_page comme paramètre */
-    /*initialise tous les attributs à partir de la BDD grâce à id_page */
-    /* @arg = id_page */
-    private function constructeur1($args)
+    /* constructeur avec $id_mag et id_contenu comme paramètres 
+    /*    constructeur2($id_mag, $id_contenu)
+    /*initialise tous les attributs à partir de la BDD grâce aux identifiants
+    /* @arg id_mag : id du magazine
+    /* @arg id_contenu : id du contenu
+    */
+    private function constructeur2($args)
     {
-        $this->id_page = $args[0];
+        $this->id_mag = $args[0];
+        $this->id_contenu = $args[1];
 
         $cnx = new CBdd();
 
-        $requete = "SELECT id_contenu, id_mag, num_page FROM page WHERE id_page = ?";
-        $row = $cnx->lireEnregistrementParId($requete, $this->id_page);
+        $requete = "SELECT num_page FROM page WHERE id_contenu=? AND id_mag=?";
+        $result = $cnx->lirePlusieursEnregistrements($requete, "ii", $this->id_contenu, $this->id_mag);
 
-        if ($row == null) {
+        if ($result == null) {
             echo "contenu inconuu";
         } else {
-            $this->id_contenu = $row["id_contenu"];
-            $this->id_mag = $row["id_mag"];
-            $this->num_page = $row["num_page"];
+            $this->num_page = $result[0]["num_page"];
         }
 
-        //initialisation de la référence vers l'objet image ou texte
-        $this->contenu = new CContenu($this->id_contenu);
+        // initialisation de la référence vers Ccontenu
+            $this->contenu = new CContenu($this->id_contenu);
     }
 
 
@@ -67,9 +68,9 @@ class CPage
         // on supprime l'image à partir de id_img
         $cnx = new CBdd();
 
-        $requete = "DELETE FROM contenu WHERE id_contenu = ?";
-        if (!$cnx->actualiserEnregistrement($requete, "i", $this->id_contenu)) {
-            echo "Impossible de supprimer l'image " . $this->id_contenu;
+        $requete = "DELETE FROM page WHERE id_contenu = ? AND id_mag = ?";
+        if (!$cnx->actualiserEnregistrement($requete, "ii", $this->id_contenu, $this->id_mag)) {
+            echo "Impossible de supprimer la page d'id_mag " .$this->id_mag. "et d'id_contenu ".$this->id_contenu;
             return false;
         }
 
@@ -78,7 +79,7 @@ class CPage
 
 
     /* 
- enregistre un id_page dans la BDD
+ enregistre une nouvelle page avec son num_page dans la BDD
  @arg $id_contenu : id de contenu
   @arg $id_mag : id de magazine
   @arg $num_page : numéro de page dans le magazine
@@ -98,26 +99,26 @@ class CPage
         $this->id_contenu = $id_contenu;
         $this->id_mag = $id_mag;
         $this->num_page = $num_page;
-        // récupération et affectation de l'attribut $id_page (lecture de l'id du dernier enregistrement effectué)
-        $req = "SELECT MAX(id_page) FROM page";
-        $result = $cnx->lireTousLesEnregistrements($req);
-        $this->id_page = $result[0][0];
 
+        
+        // initialisation de la référence vers Ccontenu
+        $this->contenu = new CContenu($this->id_contenu);
+ 
         return true;
     }
 
 
     /* 
- modifie l'objet dans la BDD (nom et desciption uniquement)
+ modifie l'objet dans la BDD (numéro de page uniquement)
  return : true ou false suivant que la mise à jour à fonctionné ou non
  */
     public function modifier()
     {
-        $req = "UPDATE page SET id_contenu = ?, id_mag = ?, num_page = ? WHERE id_page = ?";
+        $req = "UPDATE page SET num_page = ? WHERE id_contenu = ? AND id_mag = ?";
 
         $cnx = new CBdd();
 
-        if (!$cnx->actualiserEnregistrement($req, "iiii", $this->id_contenu, $this->id_mag, $this->num_page, $this->id_page)) {
+        if (!$cnx->actualiserEnregistrement($req, "iii", $this->num_page, $this->id_contenu, $this->id_mag)) {
             echo "Echec de modification <br>";
             return false;
         }
@@ -126,4 +127,48 @@ class CPage
     }
 
    
+
+    /**
+     * Get the value of id_contenu
+     */ 
+    public function getId_contenu()
+    {
+        return $this->id_contenu;
+    }
+
+    /**
+     * Get the value of id_mag
+     */ 
+    public function getId_mag()
+    {
+        return $this->id_mag;
+    }
+
+    /**
+     * Get the value of num_page
+     */ 
+    public function getNum_page()
+    {
+        return $this->num_page;
+    }
+
+    /**
+     * Set the value of num_page
+     *
+     * @return  self
+     */ 
+    public function setNum_page($num_page)
+    {
+        $this->num_page = $num_page;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of contenu
+     */ 
+    public function getContenu()
+    {
+        return $this->contenu;
+    }
 }

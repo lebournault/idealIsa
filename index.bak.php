@@ -95,27 +95,56 @@
                      "<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>",
 
                      $magazine->getId_mag() .
-                     "<input type=\"hidden\" 
+                        "<input type=\"hidden\" 
            name=\"saisie[" . $magazine->getId_mag() . "][modifier]\" />",
-                  "<input type=\"text\" 
-           name=\"saisie[" . $magazine->getId_mag(). "][nom_mag]\" 
+                     "<input type=\"text\" 
+           name=\"saisie[" . $magazine->getId_mag() . "][nom_mag]\" 
            value=\"" . $magazine->getNom_mag() . "\" 
            onchange=\"document.formulaire[$n].value=1\" />",
-           "<input type=\"text\" 
-           name=\"saisie[" . $magazine->getId_mag(). "][nb_pages]\" 
-           value=\"" . $magazine->getNb_pages() . "\" 
-           onchange=\"document.formulaire[$n].value=1\" />",
-                  "<input type=\"checkbox\" 
+                   /*   "<input type=\"number\"  min=\"" . $magazine->getNb_pages() . "\"
+           name=\"saisie[" . $magazine->getId_mag() . "][nb_pages]\" 
+           value=\"" . $magazine->getNb_pages() . "\"
+           onchange=\"document.formulaire[$n].value=1\">", */
+           "<input type=\"text\"
+           name=\"saisie[" . $magazine->getId_mag() . "][nb_pages]\" 
+           value=\"" . $magazine->getNb_pages() . "\"
+           onchange=\"document.formulaire[$n].value=1\">",
+
+                     "<input type=\"checkbox\" 
            name=\"saisie[" . $magazine->getId_mag() . "][supprimer]\" 
            value=\"" . $magazine->getId_mag() . "\" />",
+                     /*  "<input type=\"button\" 
+           name=\"saisie[" . $magazine->getId_mag() . "][modif_pag]\"            
+           value=\"modifier" . "\" />"  */
 
                      "<form action=\"https://fr.w3docs.com/\" method=\"get\" target=\"_blank\">
             <button type=\"submit\">Cliquez sur moi</button>
          </form>"
-        
-                     );
-         }
-      }
+                     /* "<input type=\"text\"
+            name=\"saisie[" . $magazine->getNom_mag() . "][nom_mag]\"
+            value=\"\" />",
+                "<input type=\"text\"
+            name=\"saisie[" . $magazine->getNb_pages() . "][nb_pages]\"
+            value=\"\" />"*/
+
+                  );
+               } // foreach
+               // while
+               // Ajout de 5 lignes vides pour la création
+               // (sans identifiant, sans case de suppression). 
+               /*           for($i=1;$i<2;$i++){
+                printf(
+        "<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>",
+        "",
+        "<input type=\"text\"
+        name=\"saisie[-$i][nom_mag]\"
+        value=\"\" />",
+        "<input type=\"text\"
+        name=\"saisie[-$i][nb_pages]\"
+        value=\"\" />",
+        "", "");
+         }  */ //for
+            }
             ?>
          </table>
          <p><input type="submit" name="ok" value="Valider" /></p>

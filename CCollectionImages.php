@@ -8,7 +8,7 @@ class CCollectionImages {
     public function __construct()
     {
         $cnx = new CBdd();
-        $requete = 'SELECT img_id FROM image';
+        $requete = 'SELECT id_img FROM image';
         $result = $cnx->lireTousLesEnregistrements($requete);
         
         $tab_images = array();

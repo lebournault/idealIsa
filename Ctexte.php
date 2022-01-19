@@ -1,14 +1,15 @@
 <?php
 
 require_once('CBdd.php');
+require_once 'IfContenu.php';
 
-class CTexte{
-    
+class CTexte implements IfContenu
+{
+
     private $id_txt;
-    private $id_contenu;
     private $titre;
     private $texte;
-    
+
     /* constructeur 
         arguments acceptés : aucun ou $id_txt
     */
@@ -40,17 +41,16 @@ class CTexte{
 
         $cnx = new CBdd();
 
-        $requete = "SELECT `id_txt`, `id_contenu`, `titre`, `texte` FROM `texte` WHERE id_txt = ?";
+        $requete = "SELECT `id_txt`, `titre`, `texte` FROM `texte` WHERE id_txt = ?";
         $row = $cnx->lireEnregistrementParId($requete, $this->id_txt);
 
         if ($row == null) {
             echo "texte inconnu";
         } else {
-            $this->id_txt= $row["id_txt"];
-            $this->id_contenu = $row["id_contenu"];
+            $this->id_txt = $row["id_txt"];
             $this->titre = $row["titre"];
             $this->texte = $row["texte"];
-         }
+        }
     }
 
     /* supprimer le texte de la BDD*/
@@ -60,7 +60,7 @@ class CTexte{
         $cnx = new CBdd();
 
         $requete = "DELETE FROM `texte` WHERE id_txt = ?";
-        //  if (!$cnx->supprimerUnEnregistrementParId($requete, $this->img_id)){
+        //  if (!$cnx->supprimerUnEnregistrementParId($requete, $this->id_img)){
         if (!$cnx->actualiserEnregistrement($requete, "i", $this->id_txt)) {
             echo "Impossible de supprimer le texte " . $this->id_txt;
             return false;
@@ -69,53 +69,58 @@ class CTexte{
         return true;
     }
 
-    function inserer($titre, $texte){
-               
-            $req = "INSERT INTO texte (titre, texte)
+    function inserer($titre, $texte)
+    {
+
+        $req = "INSERT INTO texte (titre, texte)
                      VALUES (?,?)";
-            $cnx = new CBdd();
+        $cnx = new CBdd();
 
-            if (!$cnx->actualiserEnregistrement($req, "ss", $titre, $texte)) {
-                echo "Echec d'enregistrement";
-                return false;
-            }
-
-            $req = "SELECT MAX(id_txt) FROM texte";
-            $result = $cnx->lireTousLesEnregistrements($req);
-            
-            $this->id_txt = $result[0][0];
-            $this->id_contenu = "NULL";
-            $this->titre = $titre;
-            $this->texte = $texte;
-
-            return true;
+        if (!$cnx->actualiserEnregistrement($req, "ss", $titre, $texte)) {
+            echo "Echec d'enregistrement";
+            return false;
         }
-    
-        public function modifier()
-        {
-            $req = "UPDATE texte SET id_contenu=?, titre=?, texte=? WHERE id_txt=?";
-            $cnx = new CBdd();
 
-            if (!$cnx->actualiserEnregistrement($req, "issi",$this->id_contenu, $this->titre, $this->texte, $this->id_txt)) {
-                // if (!$cnx->insererEnregistrement($req)){
-                echo "Echec d'enregistrement";
-                return false;
-            }
-            return true;
+        $req = "SELECT MAX(id_txt) FROM texte";
+        $result = $cnx->lireTousLesEnregistrements($req);
+
+        $this->id_txt = $result[0][0];
+        $this->titre = $titre;
+        $this->texte = $texte;
+
+        return true;
+    }
+
+    public function modifier()
+    {
+        $req = "UPDATE texte SET titre=?, texte=? WHERE id_txt=?";
+        $cnx = new CBdd();
+
+        if (!$cnx->actualiserEnregistrement($req, "ssi", $this->titre, $this->texte, $this->id_txt)) {
+            // if (!$cnx->insererEnregistrement($req)){
+            echo "Echec d'enregistrement";
+            return false;
         }
+        return true;
+    }
+
+    public function lireContenu()
+    {
+        return $this->texte;
+    }
 
     /**
      * Get the value of id_txt
-     */ 
+     */
     public function getId_txt()
     {
         return $this->id_txt;
     }
 
-    
+
     /**
      * Get the value of texte
-     */ 
+     */
     public function getTexte()
     {
         return $this->texte;
@@ -125,7 +130,7 @@ class CTexte{
      * Set the value of texte
      *
      * @return  self
-     */ 
+     */
     public function setTexte($texte)
     {
         $this->texte = $texte;
@@ -133,23 +138,13 @@ class CTexte{
         return $this;
     }
 
-    /**
-     * Set the value of id_contenu
-     *
-     * @return  self
-     */ 
-    public function setId_contenu($id_contenu)
-    {
-        $this->id_contenu = $id_contenu;
-
-        return $this;
-    }
+    
 
     /**
      * Set the value of titre
      *
      * @return  self
-     */ 
+     */
     public function setTitre($titre)
     {
         $this->titre = $titre;
@@ -161,7 +156,7 @@ class CTexte{
      * Set the value of id_txt
      *
      * @return  self
-     */ 
+     */
     public function setId_txt($id_txt)
     {
         $this->id_txt = $id_txt;
@@ -169,11 +164,11 @@ class CTexte{
         return $this;
     }
 
-    
+
 
     /**
      * Get the value of titre
-     */ 
+     */
     public function getTitre()
     {
         return $this->titre;
