@@ -83,7 +83,7 @@ class CContenu
         $req = "INSERT INTO contenu (boolean_img, id_img) VALUES (?, ?)";
 
         $cnx = new CBdd();
-        if (!$cnx->actualiserEnregistrement($req, "ii", 1, $id_image )) {
+        if (!$cnx->actualiserEnregistrement($req, "ii", 1, $id_image)) {
             echo "Echec d'enregistrement";
             return false;
         }
@@ -99,31 +99,60 @@ class CContenu
     }
 
 
-        /* 
+    /* 
  enregistre un id_txt dans la BDD
  @arg $id_txt : id du texte
  return : true ou false suivant que l'enregistrement a fonctionné ou nom
  */
-function insererTexte($id_txt)
-{
-    // inscription dans la BDD
-    $req = "INSERT INTO contenu (boolean_img, id_txt) VALUES (?, ?)";
+    function insererTexte($id_txt)
+    {
+        // inscription dans la BDD
+        $req = "INSERT INTO contenu (boolean_img, id_txt) VALUES (?, ?)";
 
-    $cnx = new CBdd();
-    if (!$cnx->actualiserEnregistrement($req, "ii", 0, $id_txt )) {
-        echo "Echec d'enregistrement";
-        return false;
+        $cnx = new CBdd();
+        if (!$cnx->actualiserEnregistrement($req, "ii", 0, $id_txt)) {
+            echo "Echec d'enregistrement";
+            return false;
+        }
+
+        $this->boolean_img = 0;
+        $this->id_txt = $id_txt;
+        // récupération et affectation de l'attribut $id_contenu (lecture de l'id du dernier enregistrement effectué)
+        $req = "SELECT MAX(id_contenu) FROM contenu";
+        $result = $cnx->lireTousLesEnregistrements($req);
+        $this->id_contenu = $result[0][0];
+
+        return true;
     }
 
-    $this->boolean_img = 0;
-    $this->id_txt = $id_txt;
-    // récupération et affectation de l'attribut $id_contenu (lecture de l'id du dernier enregistrement effectué)
-    $req = "SELECT MAX(id_contenu) FROM contenu";
-    $result = $cnx->lireTousLesEnregistrements($req);
-    $this->id_contenu = $result[0][0];
+    function inserer($id, $boolean_img)
+    {
+        // inscription dans la BDD
+        if ($boolean_img) {
+            $req = "INSERT INTO contenu (boolean_img, id_img) VALUES (?, ?)";
+        } else {
+            $req = "INSERT INTO contenu (boolean_img, id_txt) VALUES (?, ?)";
+        }
+        $cnx = new CBdd();
+        if (!$cnx->actualiserEnregistrement($req, "ii", $boolean_img, $id)) {
+            echo "Echec d'enregistrement";
+            return false;
+        }
 
-    return true;
-}
+        $this->boolean_img = $boolean_img;
+        if ($boolean_img) {
+            $this->id_img = $id;
+        } else {
+            $this->id_txt = $id;
+        }
+
+        // récupération et affectation de l'attribut $id_contenu (lecture de l'id du dernier enregistrement effectué)
+        $req = "SELECT MAX(id_contenu) FROM contenu";
+        $result = $cnx->lireTousLesEnregistrements($req);
+        $this->id_contenu = $result[0][0];
+
+        return true;
+    }
 
 
 
@@ -141,28 +170,8 @@ function insererTexte($id_txt)
     }
 
     /**
-     * Get the value of contenu
-     */
-    public function getContenu()
-    {
-        return $this->contenu;
-    }
-
-    /**
-     * Set the value of contenu
-     *
-     * @return  self
-     */
-    public function setContenu($contenu)
-    {
-        $this->contenu = $contenu;
-
-        return $this;
-    }
-
-    /**
      * Get the value of boolean_img
-     */ 
+     */
     public function getBoolean_img()
     {
         return $this->boolean_img;
@@ -172,11 +181,19 @@ function insererTexte($id_txt)
      * Set the value of boolean_img
      *
      * @return  self
-     */ 
+     */
     public function setBoolean_img($boolean_img)
     {
         $this->boolean_img = $boolean_img;
 
         return $this;
+    }
+
+    /**
+     * Get the value of id_contenu
+     */ 
+    public function getId_contenu()
+    {
+        return $this->id_contenu;
     }
 }

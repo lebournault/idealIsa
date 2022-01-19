@@ -26,9 +26,13 @@
    echo '<br>';
    echo $cont2->getContenu()->getMyContenu()->getTexte(); */
 
-   $mag = new CMagazine(1);
+   
+
+   $mag = new CMagazine(99);
+   $mag->ajouterPageImage(3);
+
  
-   foreach($mag->getPages() as $page){
+   /* foreach($mag->getPages() as $page){
       echo "num : ".$page->getNum_page().", id_contenu : ".$page->getId_contenu()."<br>";
 
       echo "contenu image ou texte (boolean_img) : ". $page->getContenu()->getBoolean_img() ."<br>";
@@ -40,7 +44,7 @@
          echo "Texte : <br>" . $page->getContenu()->lireContenu() ."<br>";
       }
       echo "<br><br>";
-   }
+   } */
 ?>
 
 </body>

@@ -8,15 +8,17 @@
 <body>
    <?php
 
-   include_once("ifonctions.php");
    include_once("ifonctions.inc.php");
    include_once("CCollectionImages.php");
 
+   $images = new  CCollectionImages();
+ 
+
    if (isset($_FILES['imagesSite']['tmp_name'])) {
-      ajouterImage($_FILES, $_POST["img_desc"]);
+      $images->ajouterImage($_FILES, $_POST["img_desc"]);
    }
    if (isset($_POST["image_supp_id"])) {
-      supprimerImage($_POST["image_supp_id"]);
+      $images->supprimerImage($_POST["image_supp_id"]);
    }
 
    ?>
@@ -46,10 +48,10 @@
 
          if (isset($ligne['supprimer'])) {
             // Case "supprimer" cochée = suppression = DELETE 
-            supprimerImage($id_img);
+            $images->supprimerImage($id_img);
          } elseif ($ligne['modifier'] == 1) {
             // Zone "modifier" TRUE (1) = modification = UPDATE 
-            modifierImage($id_img, $img_nom, $img_desc);
+            $images->modifierImage($id_img, $img_nom, $img_desc);
          }
       }
    }
@@ -71,7 +73,7 @@
          </tr>
          <?php
          // Code PHP pour les lignes du tableau. 
-         $images = new CCollectionImages();
+         //$images = new CCollectionImages();
 
          if ($images->getCollection() != null) { // S'il y a un résultat à afficher 
             // Initialisation d'un compteur de ligne. 

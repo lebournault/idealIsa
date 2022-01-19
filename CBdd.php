@@ -215,7 +215,7 @@ class CBdd
 
     $nb = func_num_args();
     $args = func_get_args();
-
+//var_dump($args);
     if ($nb == 0 || $nb == 2) {
       echo "Nombre d'arguments incorrects";
       return false;

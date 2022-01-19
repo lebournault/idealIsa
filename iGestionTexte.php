@@ -2,23 +2,23 @@
 
 <head>
    <title>Ajoute une texte dans la table texte</title>
-   <a href ="index.php">Retour Gestion Magazine</a><br>
+   <a href="index.php">Retour Gestion Magazine</a><br>
 </head>
 
 <body>
    <?php
 
-   include_once("ifonctions.php");
    include_once("ifonctions.inc.php");
    include_once("CCollectionTextes.php");
 
+   $textes = new CCollectionTextes();
 
    if (isset($_POST["texte_supp_id"])) {
-      supprimerTexte($_POST["texte_supp_id"]);
+      $textes->supprimerTexte($_POST["texte_supp_id"]);
    }
 
    if (isset($_POST["texte"])) {
-      ajouterTexte($_POST["texte"], $_POST["titre"]);
+      $textes->ajouterTexte($_POST["texte"], $_POST["titre"]);
    }
    ?>
 
@@ -47,10 +47,10 @@
 
          if (isset($ligne['supprimer'])) {
             // Case "supprimer" cochée = suppression = DELETE 
-            supprimerTexte($id_txt);
+            $textes->supprimerTexte($id_txt);
          } elseif ($ligne['modifier'] == 1) {
             // Zone "modifier" TRUE (1) = modification = UPDATE 
-            modifierTexte($id_txt, $titre, $texte);
+            $textes->modifierTexte($id_txt, $titre, $texte);
          }
       }
    }
@@ -71,7 +71,7 @@
          </tr>
          <?php
          // Code PHP pour les lignes du tableau. 
-         $textes = new CCollectionTextes();
+         //$textes = new CCollectionTextes();
 
          if ($textes->getCollection() != null) { // S'il y a un résultat à afficher 
             // Initialisation d'un compteur de ligne. 
@@ -98,8 +98,8 @@
            onchange=\"document.formulaire[$n].value=1\" />",
                   "<textarea 
            name=\"saisie[" . $texte->getId_txt() . "][texte]\" 
-           rows=\"7\" cols=\"40\" onchange=\"document.formulaire[$n].value=1\">" 
-           . $texte->getTexte() . " 
+           rows=\"7\" cols=\"40\" onchange=\"document.formulaire[$n].value=1\">"
+                     . $texte->getTexte() . " 
             </textarea>",
                   "<input type=\"checkbox\" 
            name=\"saisie[" . $texte->getId_txt() . "][supprimer]\" 

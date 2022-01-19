@@ -7,18 +7,19 @@
 <body>
    <?php
 
-   include_once("ifonctions.php");
    include_once("ifonctions.inc.php");
    include_once("CCollectionMagazines.php");
 
+   $magazines = new CCollectionMagazines();
+
    if (isset($_POST["titre_mag"])) {
       if ($_POST["titre_mag"] != "") {
-         ajouterMagazine($_POST["titre_mag"], $_POST["nb_pages"]);
+         $magazines->ajouterMagazine($_POST["titre_mag"], $_POST["nb_pages"]);
       }
    }
 
    if (isset($_POST["id_mag"])) {
-      supprimerMagazine($_POST["id_mag"]);
+      $magazines->supprimerMagazine($_POST["id_mag"]);
    }
    ?>
 
@@ -27,9 +28,9 @@
    <form enctype="multipart/form-data" action="" method="post">
       <table border="0" cellpadding="4" cellspacing="0">
          <tr style="vertical-align:middle;">
-            <td><label for="name">titre magazine :</label></td>
+            <td><label for="name">Titre magazine :</label></td>
             <td><input type="text" id="titre_mag" name="titre_mag"></text></td>
-            <td><label for="name">nombre de pages à insérer dans le magazine :</label></td>
+            <td><label for="name">Nombre de pages à insérer dans le magazine :</label></td>
             <td><input type="number" placeholder="1" id="nb_pages" name="nb_pages" min="1"></text></td>
             <td><input type="submit" value="Enregistrer" /></td>
          <tr>
@@ -47,14 +48,14 @@
             // Nettoyage de la saisie. 
             $nom_mag = trim($ligne['nom_mag']);
             $nb_pages = $ligne['nb_pages'];
-            echo "nom mag : ".$nom_mag . "<br>";
+            echo "nom mag : " . $nom_mag . "<br>";
             echo "nb pages : $nb_pages";
             if (isset($ligne['supprimer'])) {
                // Case "supprimer" cochée = suppression = DELETE 
-               supprimerMagazine($id_mag);
+               $magazines->supprimerMagazine($id_mag);
             } elseif ($ligne['modifier'] == 1) {
                // Zone "modifier" TRUE (1) = modification = UPDATE 
-               modifierMagazine($id_mag, $nom_mag, $nb_pages);
+               $magazines->modifierMagazine($id_mag, $nom_mag, $nb_pages);
             }
          }
       }
@@ -64,7 +65,7 @@
       ?>
       <!-- construction d'une table HTML à l'intérieur  
  ++++ d'un formulaire -->
-      <form action="" name="formulaire" method="post">
+      <form action="" name="formulaire" method="get">
          <table border="1" cellpadding="4" cellspacing="0">
             <!-- ligne de titre -->
             <tr align="center">
@@ -76,7 +77,7 @@
             </tr>
             <?php
             // Code PHP pour les lignes du tableau. 
-            $magazines = new CCollectionMagazines();
+            //$magazines = new CCollectionMagazines();
 
             if ($magazines->getCollection() != null) { // S'il y a un résultat à afficher 
                // Initialisation d'un compteur de ligne. 
@@ -94,32 +95,26 @@
                   printf(
                      "<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>",
 
-                     $magazine->getId_mag() .
-                     "<input type=\"hidden\" 
-           name=\"saisie[" . $magazine->getId_mag() . "][modifier]\" />",
-                  "<input type=\"text\" 
-           name=\"saisie[" . $magazine->getId_mag(). "][nom_mag]\" 
-           value=\"" . $magazine->getNom_mag() . "\" 
-           onchange=\"document.formulaire[$n].value=1\" />",
-           "<input type=\"text\" 
-           name=\"saisie[" . $magazine->getId_mag(). "][nb_pages]\" 
-           value=\"" . $magazine->getNb_pages() . "\" 
-           onchange=\"document.formulaire[$n].value=1\" />",
-                  "<input type=\"checkbox\" 
-           name=\"saisie[" . $magazine->getId_mag() . "][supprimer]\" 
-           value=\"" . $magazine->getId_mag() . "\" />",
+                     $magazine->getId_mag() . "<input type=\"hidden\" name=\"saisie[" . $magazine->getId_mag() . "][modifier]\" />",
+                     "<input type=\"text\" name=\"saisie[" . $magazine->getId_mag() . "][nom_mag]\" value=\"" . $magazine->getNom_mag() . "\" 
+                     onchange=\"document.formulaire[$n].value=1\" />",
+                     "<input type=\"text\" name=\"saisie[" . $magazine->getId_mag() . "][nb_pages]\" value=\"" . $magazine->getNb_pages() . "\" 
+                     onchange=\"document.formulaire[$n].value=1\" />",
+                     "<input type=\"checkbox\" name=\"saisie[" . $magazine->getId_mag() . "][supprimer]\" value=\"" . $magazine->getId_mag() . "\" />",
 
-                     "<form action=\"https://fr.w3docs.com/\" method=\"get\" target=\"_blank\">
-            <button type=\"submit\">Cliquez sur moi</button>
-         </form>"
-        
-                     );
-         }
-      }
+                     "<form action=\"igestionContenuMag.php\" method=\"post\" target=\"_blank\">
+                       <input type=\"hidden\" name=\"id_magazine\" value=\"" . $magazine->getId_mag() . "\"/>
+                        <button type=\"submit\">Cliquez sur moi</button>
+                   </form>"
+
+                  );
+               }
+            }
             ?>
          </table>
          <p><input type="submit" name="ok" value="Valider" /></p>
-         <a href="iGestionPage.php">Gestionnaire de pages</a>&emsp;
+
+         <a href="iGestionContenuMag.php">Gestionnaire de pages</a>&emsp;
          <a href="iGestionImage.php">Gestionnaire d'images</a>&emsp;
          <a href="iGestionTexte.php">Gestionnaire de texte</a>&emsp;
          <a href="iApercuFlipbook.php">flipbook</a>

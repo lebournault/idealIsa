@@ -155,7 +155,7 @@ class CImage implements IfContenu
 
             // inscription dans la BDD
             $req = "INSERT INTO image (img_nom, img_taille, img_type, img_desc, img_blob)
-                     VALUES (" . $this->img_nom . "', '" . $this->img_taille . "', '" . $this->img_type . "' ,
+                     VALUES ('" . $this->img_nom . "', '" . $this->img_taille . "', '" . $this->img_type . "' ,
                       '" . $this->img_desc . "' ,'" . addslashes($this->img_blob) . "')";
 
             $cnx = new CBdd();

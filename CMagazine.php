@@ -56,9 +56,9 @@ class CMagazine
         //initialisation du tableau des pages du magazine
         $requete = "SELECT id_contenu, num_page FROM page WHERE id_mag = ? order by num_page";
         $result = $cnx->lirePlusieursEnregistrementsParId($requete, $this->id_mag);
-        
-        if ($result != null) { 
-            foreach ($result as $page){   
+
+        if ($result != null) {
+            foreach ($result as $page) {
                 $this->pages[] = new CPage($this->id_mag, $page[0]);
             }
         }
@@ -90,17 +90,17 @@ class CMagazine
     {
         // inscription dans la BDD
         $req = "INSERT INTO magazine (nom_mag, nb_pages) VALUES (?,?)";
-        
+
         $cnx = new CBdd();
         if (!$cnx->actualiserEnregistrement($req, "si", $nom_mag, $nb_pages)) {
             echo "Echec d'enregistrement";
             return false;
         }
 
-         // récupération et affectation de l'attribut $id_mag (lecture de l'id du dernier enregistrement effectué)
+        // récupération et affectation de l'attribut $id_mag (lecture de l'id du dernier enregistrement effectué)
         $req = "SELECT MAX(id_mag) FROM magazine";
         $result = $cnx->lireTousLesEnregistrements($req);
-        
+
         $this->id_mag = $result[0][0];
         $this->nom_mag = $nom_mag;
         $this->nb_pages = $nb_pages;
@@ -127,13 +127,51 @@ class CMagazine
         return true;
     }
 
-    
 
+    public function ajouterPageImage($id_img)
+    {
+        // inscription dans la BDD
+        $req = "Select id_contenu from contenu where id_img =?";
+
+        $cnx = new CBdd();
+        if (!$result = $cnx->lireEnregistrementParId($req, $id_img)) {
+            $contenu = new CContenu();
+            if (!$contenu->inserer($id_img, 1)) {
+                echo "échec d'ajout de la page d'identifiant " . $id_img;
+                return false;
+            }
+            $id_contenu = $contenu->getId_contenu();
+        } else {
+            $id_contenu = $result["id_contenu"];
+        }
+        $page = new CPage();
+        $page->inserer($id_contenu, $this->id_mag, -1);
+    }
+
+    public function ajouterPageTexte($id_txt)
+    {
+        // inscription dans la BDD
+        $req = "Select id_contenu from contenu where id_txt =?";
+
+        $cnx = new CBdd();
+        if (!$result = $cnx->lireEnregistrementParId($req, $id_txt)) {
+            $contenu = new CContenu();
+            if (!$contenu->inserer($id_txt, 0)) {
+                echo "échec d'ajout de la page d'identifiant " . $id_txt;
+                return false;
+            }
+            $id_contenu = $contenu->getId_contenu();
+        } else {
+            $id_contenu = $result["id_contenu"];
+        }
+        $page = new CPage();
+        $page->inserer($id_contenu, $this->id_mag, -1);
+    } 
 
 
     /**
      * Get the value of nom_mag
-     */ 
+     */
     public function getNom_mag()
     {
         return $this->nom_mag;
@@ -143,7 +181,7 @@ class CMagazine
      * Set the value of nom_mag
      *
      * @return  self
-     */ 
+     */
     public function setNom_mag($nom_mag)
     {
         $this->nom_mag = $nom_mag;
@@ -153,7 +191,7 @@ class CMagazine
 
     /**
      * Get the value of id_mag
-     */ 
+     */
     public function getId_mag()
     {
         return $this->id_mag;
@@ -161,7 +199,7 @@ class CMagazine
 
     /**
      * Get the value of nb_pages
-     */ 
+     */
     public function getNb_pages()
     {
         return $this->nb_pages;
@@ -171,7 +209,7 @@ class CMagazine
      * Set the value of nb_pages
      *
      * @return  self
-     */ 
+     */
     public function setNb_pages($nb_pages)
     {
         $this->nb_pages = $nb_pages;
@@ -181,10 +219,9 @@ class CMagazine
 
     /**
      * Get the value of pages
-     */ 
+     */
     public function getPages()
     {
         return $this->pages;
     }
-
 }
