@@ -2,7 +2,7 @@
 
 <head>
    <title>Ajoute une image dans la table image</title>
-   <a href ="index.php">Retour Gestion Magazine</a><br>
+   <a href ="index.php">Retour Accueil</a><br>
 </head>
 
 <body>
@@ -10,6 +10,7 @@
 
    include_once("ifonctions.inc.php");
    include_once("CCollectionImages.php");
+   session_start();
 
    $images = new  CCollectionImages();
  
@@ -61,7 +62,7 @@
    ?>
    <!-- construction d'une table HTML à l'intérieur  
  ++++ d'un formulaire -->
-   <form action="iGestionImage.php" name="formulaire" method="post">
+   <form action="" name="formulaire" method="post">
       <table border="1" cellpadding="4" cellspacing="0">
          <!-- ligne de titre -->
          <tr align="center">

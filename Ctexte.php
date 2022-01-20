@@ -109,6 +109,11 @@ class CTexte implements IfContenu
         return $this->texte;
     }
 
+    public function lireIntituleContenu(){
+
+        return $this->titre;
+    }
+
     /**
      * Get the value of id_txt
      */

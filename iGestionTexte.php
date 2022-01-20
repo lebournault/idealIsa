@@ -2,7 +2,7 @@
 
 <head>
    <title>Ajoute une texte dans la table texte</title>
-   <a href="index.php">Retour Gestion Magazine</a><br>
+   <a href="index.php">Retour Accueil</a><br>
 </head>
 
 <body>
@@ -10,6 +10,7 @@
 
    include_once("ifonctions.inc.php");
    include_once("CCollectionTextes.php");
+   session_start();
 
    $textes = new CCollectionTextes();
 
@@ -28,7 +29,7 @@
       <table border="0" cellpadding="4" cellspacing="0">
          <tr style="vertical-align:middle;">
             <td><label for="name">titre :</label></td>
-            <td><input type="text" id="titre" name="titre"></text></td>
+            <td><input type="text" id="titre" name="titre" required></text></td>
             <td><textarea name="texte" rows="5" cols="40" placeholder="Ajouter votre texte ici"></textarea></td>
             <td><input type="submit" value="Enregistrer" /></td>
          <tr>

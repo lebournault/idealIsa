@@ -168,6 +168,21 @@ class CContenu
 
         return $contenu->lireContenu();
     }
+    
+    public function lireIntituleContenu()
+    {
+
+        /* traitement du contenu à renvoyer */
+        if ($this->boolean_img) {        // si c'est une image
+            $contenu = new CImage($this->id_img);
+        } else {
+            $contenu = new CTexte($this->id_txt);
+        }
+
+        return $contenu->lireIntituleContenu();
+    }
+    
+
 
     /**
      * Get the value of boolean_img

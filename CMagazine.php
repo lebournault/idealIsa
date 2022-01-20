@@ -147,9 +147,11 @@ class CMagazine
         $page = new CPage();
         $page->inserer($id_contenu, $this->id_mag, -1);
     }
+    
 
     public function ajouterPageTexte($id_txt)
     {
+        //var_dump($id_txt);
         // inscription dans la BDD
         $req = "Select id_contenu from contenu where id_txt =?";
 

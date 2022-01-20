@@ -199,6 +199,11 @@ class CImage implements IfContenu
         return $this->img_formatee;
     }
 
+    public function lireIntituleContenu(){
+
+        return $this->img_nom;
+    }
+
     /**
      * Get the value of id_img
      */

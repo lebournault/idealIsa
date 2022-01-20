@@ -87,10 +87,23 @@ class CPage
  */
     function inserer($id_contenu, $id_mag, $num_page)
     {
+        $cnx = new CBdd();
+        // vérification si le contenu pour le magazine est déjà présent dans la table page
+        $req = "SELECT `id_contenu`from page where `id_contenu`=? and id_mag = ?";
+        $resultat =$cnx->lirePlusieursEnregistrements($req, "ii", $id_contenu, $id_mag);
+/*         echo "id_contenu: $id_contenu, id_mag : $id_mag <br>";
+        echo "req : $req <br>";
+        echo 'résultat : <br>';
+        var_dump($resultat); */
+        
+        if ($resultat != null){     // si présent
+            return false;
+        }
+
         // inscription dans la BDD
         $req = "INSERT INTO page (id_contenu, id_mag, num_page) VALUES (?, ?, ?)";
 
-        $cnx = new CBdd();
+        
         if (!$cnx->actualiserEnregistrement($req, "iii", $id_contenu, $id_mag, $num_page)) {
             echo "Echec d'enregistrement";
             return false;
@@ -125,7 +138,6 @@ class CPage
 
         return true;
     }
-
    
 
     /**
