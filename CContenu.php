@@ -67,7 +67,7 @@ class CContenu
             echo "Impossible de supprimer le contenu " . $this->id_contenu;
             return false;
         }
-
+        
         return true;
     }
 

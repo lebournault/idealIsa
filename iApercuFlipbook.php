@@ -11,7 +11,7 @@
 	<meta name="viewport" content="width = 1050, user-scalable = no" />
 	<script type="text/javascript" src="../../extras/jquery.min.1.7.js"></script>
 	<script type="text/javascript" src="../../extras/modernizr.2.5.3.min.js"></script>
-	<a href="index.php">Retour Accueil</a><br>
+	<a href="iGestionContenuMag.php">Retour au gestionnaire de contenu</a><br>
 </head>
 
 <body>

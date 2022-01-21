@@ -46,7 +46,9 @@
 
          if (isset($ligne['supprimer'])) {
             // Case "supprimer" cochée = suppression = DELETE 
-            // $mag->supprimerPage($id_img); //a faire
+            $page = new Cpage($mag->getId_mag(), $id_contenu);
+            $page->supprimer(); //a faire
+            
          }
          if (isset($ligne['num_page'])) {
             $page = new CPage($mag->getId_mag(), $id_contenu);
@@ -122,8 +124,7 @@
          ?>
       </table>
       <p><input type="submit" name="ok" value="Valider les modifications" /></p>
-
-
+      <a href="iApercuFlipbook.php">Aperçu flipbook</a>
 </body>
 
 </html>

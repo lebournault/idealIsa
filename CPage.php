@@ -73,11 +73,15 @@ class CPage
             echo "Impossible de supprimer la page d'id_mag " .$this->id_mag. "et d'id_contenu ".$this->id_contenu;
             return false;
         }
+        // etape 2 : rechercher si id_contneu est toujours présent dans la table page
+        $requete = "SELECT id_contenu FROM `page` where id_contenu = ?";
+        if (!$cnx->lirePlusieursEnregistrementsParId($requete, $this->id_contenu)) {
+            $this->contenu->supprimer();
+        }
 
         return true;
     }
-
-
+    
     /* 
  enregistre une nouvelle page avec son num_page dans la BDD
  @arg $id_contenu : id de contenu

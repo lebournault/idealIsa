@@ -39,6 +39,7 @@ session_start();
             <td><input type="submit" value="Enregistrer" /></td>
          <tr>
       </table>
+   </form>
       <h3>Modifier le(s) titre(s), le nombre de pages ou supprimer vos magazines :</h3>
       <?php
       // Traitement du formulaire. 
@@ -126,11 +127,9 @@ session_start();
             ?>
          </table>
          <p><input type="submit" name="ok" value="Valider" /></p>
+      </form>
 
          <a href="iGestionImage.php">Gestionnaire d'images</a>&emsp;
          <a href="iGestionTexte.php">Gestionnaire de texte</a>&emsp;
-         <a href="iApercuFlipbook.php">flipbook</a>
-
 </body>
-
 </html>
