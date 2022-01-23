@@ -10,7 +10,7 @@ class CPage
     private $num_page;
 
     /* références */
-    private $contenu;   // référence vers Ccontenu
+    private $contenu;   // référence vers Contenu
 
     /* constructeur 
         arguments acceptés : aucun ou $id_contenu

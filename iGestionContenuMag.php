@@ -15,10 +15,13 @@
 
 
    session_start();
-   $id_mag = $_SESSION['id_mag'];
+   if(isset($_SESSION['id_mag'])){
+      $id_mag = $_SESSION['id_mag'];
+   }
+  
    // Traitement du passage du nom_mag de l'index vers iGestionContenuMag 
-   if (isset($_POST["id_magazine"])) {
-      $id_mag = $_POST["id_magazine"];
+   if (isset($_GET["id_magazine"])) {
+      $id_mag = $_GET["id_magazine"];
       $_SESSION['id_mag'] = $id_mag;
    }
    $mag = new CMagazine($id_mag);

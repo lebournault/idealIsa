@@ -12,7 +12,7 @@ class CMagazine
     private $pages = array(); // tableau des pages du magazine
 
     /* constructeur 
-        arguments acceptés : aucun ou $id_contenu
+        arguments acceptés : aucun ou $id_mag
     */
     public function __construct()
     {
@@ -71,12 +71,15 @@ class CMagazine
         // on supprime le magazine à partir de son id
         $cnx = new CBdd();
 
+        foreach ($this->pages as $page) {
+            $page->supprimer();
+        }
+
         $requete = "DELETE FROM `magazine` WHERE id_mag = ?";
         if (!$cnx->actualiserEnregistrement($requete, "i", $this->id_mag)) {
             echo "Impossible de supprimer le magazine " . $this->id_mag;
             return false;
         }
-
         return true;
     }
 
