@@ -104,7 +104,7 @@ class CContenu
  @arg $id_txt : id du texte
  return : true ou false suivant que l'enregistrement a fonctionné ou nom
  */
-    function insererTexte($id_txt)
+    public function insererTexte($id_txt)
     {
         // inscription dans la BDD
         $req = "INSERT INTO contenu (boolean_img, id_txt) VALUES (?, ?)";
@@ -125,7 +125,7 @@ class CContenu
         return true;
     }
 
-    function inserer($id, $boolean_img)
+    public function inserer($id, $boolean_img)
     {
         // inscription dans la BDD
         if ($boolean_img) {

@@ -85,8 +85,8 @@
 
 		yepnope({
 			test: Modernizr.csstransforms,
-			yep: ['../../lib/turn.js'],
-			nope: ['../../lib/turn.html4.min.js'],
+			yep: ['lib/turn.js'],
+			nope: ['lib/turn.html4.min.js'],
 			both: ['css/basic.css'],
 			complete: loadApp
 		});

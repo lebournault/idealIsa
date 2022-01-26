@@ -72,20 +72,20 @@ class CImage implements IfContenu
     {
         //convert a blob into an image file
         if ($this->img_blob != null) {
-            $image = imagecreatefromstring($this->img_blob);
+            $image = imagecreatefromstring($this->img_blob); // Créer une nouvelle image à partir du flux d’images dans la chaîne
 
-            ob_start(); //You could also just output the $image via header() and bypass this buffer capture.
+            ob_start(); // Activer le tampon de sortie 
             if ($this->img_type == "image/jpeg" || $this->img_type  == "image/jpg") {
                 imagejpeg($image, null, 80);
             } else if ($this->img_type == "image/png") {
                 imagepng($image);
             } else if ($this->img_type == "image/gif") {
-                imagegif($image, null, 80);
+                imagegif($image, null, 80); // Image de sortie vers le navigateur ou le fichier
             } else if ($this->img_type == "image/bmp") {
-                imagebmp($image, null, 80);
+                imagebmp($image, null, 80); //Affiche ou enregistre une version BMP de l’image donnée.
             }
 
-            $data = ob_get_contents();
+            $data = ob_get_contents(); // Retourne le contenu du tampon de sortie
             ob_end_clean();
 
             $image = "data:" . $this->img_type  . ";base64," .  base64_encode($data);
@@ -121,7 +121,7 @@ class CImage implements IfContenu
     function inserer($image, $description)
     {
         // chargement de l'image et vérification de ses caractéristiques
-        $ret = is_uploaded_file($image['imagesSite']['tmp_name']);
+        $ret = is_uploaded_file($image['imagesSite']['tmp_name']); // Indique si le fichier a été téléchargé via HTTP POST
 
         if (!$ret) {
             echo "Problème de transfert de l'image";
