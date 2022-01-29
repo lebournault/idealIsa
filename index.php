@@ -129,7 +129,7 @@
 
    <a href="iGestionImage.php">Gestionnaire d'images</a>&emsp;
    <a href="iGestionTexte.php">Gestionnaire de texte</a>&emsp;
-   <a href="iApercuFlipbook.php">flipbook</a>
+   
 
    <script>
       function redirection(page, id_mag) {
